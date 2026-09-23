@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ignite Time</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#128293;</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div id="passcode-screen" class="passcode-screen hidden">
+  <form id="passcode-form" class="passcode-card">
+    <h1>Ignite Time</h1>
+    <p>Enter the team passcode to continue.</p>
+    <input id="passcode-input" type="password" placeholder="Passcode" autocomplete="off" />
+    <button type="submit">Enter</button>
+    <p id="passcode-error" class="error hidden">That's not it — try again.</p>
+  </form>
+</div>
+
+<div id="app" class="app hidden">
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-logo-wrap">
+        <img src="ignite-logo.png" alt="Ignite Digital Marketing" class="brand-logo" />
+      </div>
+      <span class="brand-sub">TIME</span>
+    </div>
+    <div class="whoami">
+      <label for="employee-select">Tracking as</label>
+      <select id="employee-select"></select>
+      <button id="add-employee-btn" class="ghost-btn" title="Add teammate">+ teammate</button>
+    </div>
+  </header>
+
+  <div id="active-bar" class="active-bar hidden">
+    <div class="active-bar-inner">
+      <div class="active-client">
+        <span class="pulse-dot"></span>
+        <div>
+          <div class="active-client-name" id="active-client-name">—</div>
+          <div class="active-since" id="active-since"></div>
+        </div>
+      </div>
+      <div class="active-timer" id="active-timer">00:00:00</div>
+      <input id="active-notes" class="active-notes" type="text" placeholder="What are you working on? (notes)" />
+      <button id="stop-btn" class="stop-btn">Stop &amp; save</button>
+    </div>
+  </div>
+
+  <main class="main">
+    <section class="clients-section">
+      <div class="section-head">
+        <h2>Clients</h2>
+        <button id="add-client-btn" class="ghost-btn">+ add client</button>
+      </div>
+      <div id="client-grid" class="client-grid"></div>
+    </section>
+
+    <section class="history-section">
+      <div class="section-head">
+        <h2>Time entries</h2>
+        <div class="history-filters">
+          <button id="add-entry-btn" class="ghost-btn">+ add entry</button>
+          <select id="filter-employee">
+            <option value="">Everyone</option>
+          </select>
+          <select id="filter-range">
+            <option value="week">This week</option>
+            <option value="month">This month</option>
+            <option value="all">All time</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="summary-row" class="summary-row"></div>
+
+      <table class="entries-table">
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Employee</th>
+            <th>Date</th>
+            <th>Duration</th>
+            <th>Notes</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="entries-body"></tbody>
+      </table>
+      <p id="entries-empty" class="empty-state hidden">No time logged yet for this filter — click a client above to start your first timer.</p>
+    </section>
+  </main>
+</div>
+
+  <div id="manual-entry-overlay" class="modal-overlay hidden">
+    <div class="modal-card">
+      <h3>Add a time entry</h3>
+      <p class="modal-sub">For time you tracked elsewhere, or forgot to start the timer for.</p>
+
+      <form id="manual-entry-form">
+        <label>
+          Employee
+          <select id="manual-employee" required></select>
+        </label>
+        <label>
+          Client
+          <select id="manual-client" required></select>
+        </label>
+        <div class="modal-row">
+          <label>
+            Date
+            <input id="manual-date" type="date" required />
+          </label>
+          <label>
+            Start time
+            <input id="manual-start" type="time" required />
+          </label>
+          <label>
+            End time
+            <input id="manual-end" type="time" required />
+          </label>
+        </div>
+        <label>
+          Notes
+          <textarea id="manual-notes" rows="2" placeholder="What was this for?"></textarea>
+        </label>
+        <p id="manual-entry-error" class="error hidden"></p>
+        <div class="modal-actions">
+          <button type="button" id="manual-entry-cancel" class="ghost-btn">Cancel</button>
+          <button type="submit" class="stop-btn">Save entry</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+<script src="app.js"></script>
+</body>
+</html>
