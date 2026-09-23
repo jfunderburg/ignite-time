@@ -109,14 +109,21 @@ input, select {
   gap: 14px;
 }
 
-.brand { display: flex; align-items: baseline; gap: 8px; }
+.brand { display: flex; align-items: center; gap: 12px; }
 
-.brand-mark {
-  font-family: 'Big Shoulders Display', sans-serif;
-  font-weight: 800;
-  font-size: 1.9rem;
-  letter-spacing: 0.03em;
-  color: #fff;
+.brand-logo-wrap {
+  background: #fff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  line-height: 0;
+}
+
+.brand-logo {
+  height: 32px;
+  width: auto;
+  display: block;
 }
 
 .brand-sub {
@@ -425,7 +432,87 @@ input, select {
   font-size: 0.9rem;
 }
 
+/* ---- Manual entry modal ---- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 25, 48, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 50;
+}
+
+.modal-card {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 28px;
+  width: min(440px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(10, 25, 48, 0.4);
+}
+
+.modal-card h3 {
+  font-size: 1.4rem;
+  color: var(--navy-950);
+  margin-bottom: 4px;
+}
+
+.modal-sub {
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  margin: 0 0 18px;
+}
+
+#manual-entry-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+
+#manual-entry-form input,
+#manual-entry-form select,
+#manual-entry-form textarea {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 9px 11px;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--ink);
+  font-family: 'Montserrat', sans-serif;
+}
+
+#manual-entry-form textarea { resize: vertical; }
+
+.modal-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.modal-actions .ghost-btn {
+  border: 1px solid var(--line);
+  color: var(--navy-800);
+  padding: 11px 16px;
+}
+
 @media (max-width: 640px) {
+  .modal-row { grid-template-columns: 1fr; }
+
   .topbar { padding: 16px 18px; }
   .main { padding: 20px 18px; }
   .active-bar-inner { padding: 12px 18px; }

@@ -26,7 +26,9 @@
 
   <header class="topbar">
     <div class="brand">
-      <span class="brand-mark">IGNITE</span>
+      <div class="brand-logo-wrap">
+        <img src="ignite-logo.png" alt="Ignite Digital Marketing" class="brand-logo" />
+      </div>
       <span class="brand-sub">TIME</span>
     </div>
     <div class="whoami">
@@ -64,6 +66,7 @@
       <div class="section-head">
         <h2>Time entries</h2>
         <div class="history-filters">
+          <button id="add-entry-btn" class="ghost-btn">+ add entry</button>
           <select id="filter-employee">
             <option value="">Everyone</option>
           </select>
@@ -94,6 +97,47 @@
     </section>
   </main>
 </div>
+
+  <div id="manual-entry-overlay" class="modal-overlay hidden">
+    <div class="modal-card">
+      <h3>Add a time entry</h3>
+      <p class="modal-sub">For time you tracked elsewhere, or forgot to start the timer for.</p>
+
+      <form id="manual-entry-form">
+        <label>
+          Employee
+          <select id="manual-employee" required></select>
+        </label>
+        <label>
+          Client
+          <select id="manual-client" required></select>
+        </label>
+        <div class="modal-row">
+          <label>
+            Date
+            <input id="manual-date" type="date" required />
+          </label>
+          <label>
+            Start time
+            <input id="manual-start" type="time" required />
+          </label>
+          <label>
+            End time
+            <input id="manual-end" type="time" required />
+          </label>
+        </div>
+        <label>
+          Notes
+          <textarea id="manual-notes" rows="2" placeholder="What was this for?"></textarea>
+        </label>
+        <p id="manual-entry-error" class="error hidden"></p>
+        <div class="modal-actions">
+          <button type="button" id="manual-entry-cancel" class="ghost-btn">Cancel</button>
+          <button type="submit" class="stop-btn">Save entry</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
 <script src="app.js"></script>
 </body>

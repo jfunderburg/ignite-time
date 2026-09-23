@@ -357,6 +357,86 @@
   el("filter-employee").addEventListener("change", renderHistory);
   el("filter-range").addEventListener("change", renderHistory);
 
+  // ---- Manual entry modal ---------------------------------------------------
+
+  function populateManualSelects() {
+    const empSelect = el("manual-employee");
+    empSelect.innerHTML = "";
+    state.employees.forEach((emp) => {
+      const opt = document.createElement("option");
+      opt.value = emp.name;
+      opt.textContent = emp.name;
+      if (emp.name === state.employee) opt.selected = true;
+      empSelect.appendChild(opt);
+    });
+
+    const clientSelect = el("manual-client");
+    clientSelect.innerHTML = "";
+    state.clients
+      .filter((c) => !c.archived)
+      .forEach((c) => {
+        const opt = document.createElement("option");
+        opt.value = c.id;
+        opt.textContent = c.name;
+        clientSelect.appendChild(opt);
+      });
+  }
+
+  function openManualEntryModal() {
+    populateManualSelects();
+    const now = new Date();
+    el("manual-date").value = now.toISOString().slice(0, 10);
+    el("manual-start").value = "";
+    el("manual-end").value = "";
+    el("manual-notes").value = "";
+    el("manual-entry-error").classList.add("hidden");
+    el("manual-entry-overlay").classList.remove("hidden");
+  }
+
+  function closeManualEntryModal() {
+    el("manual-entry-overlay").classList.add("hidden");
+  }
+
+  el("add-entry-btn").addEventListener("click", openManualEntryModal);
+  el("manual-entry-cancel").addEventListener("click", closeManualEntryModal);
+  el("manual-entry-overlay").addEventListener("click", (e) => {
+    if (e.target.id === "manual-entry-overlay") closeManualEntryModal();
+  });
+
+  el("manual-entry-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const errorEl = el("manual-entry-error");
+    errorEl.classList.add("hidden");
+
+    const date = el("manual-date").value;
+    const startTime = el("manual-start").value;
+    const endTime = el("manual-end").value;
+    if (!date || !startTime || !endTime) return;
+
+    const startedAt = new Date(`${date}T${startTime}`).getTime();
+    let endedAt = new Date(`${date}T${endTime}`).getTime();
+    // If end time is earlier than start time, assume it rolled past midnight.
+    if (endedAt <= startedAt) endedAt += 24 * 60 * 60 * 1000;
+
+    try {
+      await api("/entries", {
+        method: "POST",
+        body: JSON.stringify({
+          employee: el("manual-employee").value,
+          clientId: el("manual-client").value,
+          startedAt,
+          endedAt,
+          notes: el("manual-notes").value,
+        }),
+      });
+      closeManualEntryModal();
+      await loadEntries();
+    } catch (err) {
+      errorEl.textContent = err.message || "Couldn't save that entry.";
+      errorEl.classList.remove("hidden");
+    }
+  });
+
   // ---- Utils ----------------------------------------------------------------
 
   function formatHMS(totalSeconds) {
